@@ -14,6 +14,8 @@ BOT_NAME = 'zhihuuser'
 SPIDER_MODULES = ['zhihuuser.spiders']
 NEWSPIDER_MODULE = 'zhihuuser.spiders'
 
+PROXY_POOL_URL = 'http://127.0.0.1:5000/get'
+
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 # USER_AGENT = 'zhihu (+http://www.yourdomain.com)'
 
@@ -58,7 +60,11 @@ DEFAULT_REQUEST_HEADERS = {
 # DOWNLOADER_MIDDLEWARES = {
 #    'zhihuuser.middlewares.MyCustomDownloaderMiddleware': 543,
 # }
-
+DOWNLOADER_MIDDLEWARES = {
+#    'myproxies.middlewares.MyCustomDownloaderMiddleware': 543,
+     'scrapy.contrib.downloadermiddleware.httpproxy.HttpProxyMiddleware':543,
+     'zhihuuser.middlewares.ZhihuSpiderMiddleware':125
+}
 # DOWNLOADER_MIDDLEWARES = {
 #     'scrapy_splash.SplashCookiesMiddleware': 723,
 #     'scrapy_splash.SplashMiddleware': 725,

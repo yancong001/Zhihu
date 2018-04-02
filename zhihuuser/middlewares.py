@@ -6,12 +6,29 @@
 # http://doc.scrapy.org/en/latest/topics/spider-middleware.html
 
 from scrapy import signals
+import requests
+from zhihuuser.settings import PROXY_POOL_URL
 
 
 class ZhihuSpiderMiddleware(object):
     # Not all methods need to be defined. If a method is not defined,
     # scrapy acts as if the spider middleware does not modify the
     # passed objects.
+
+    @classmethod
+    def get_proxy(self):
+        try:
+            response = requests.get(PROXY_POOL_URL)
+            if response.status_code == 200:
+                return response.text
+            return None
+        except ConnectionError:
+            return None
+
+    def process_request(self, request, spider):
+        thisip = self.get_proxy(self)
+        print("this is ip:" + thisip)
+        request.meta["proxy"] = "http://" + thisip
 
     @classmethod
     def from_crawler(cls, crawler):
@@ -49,6 +66,7 @@ class ZhihuSpiderMiddleware(object):
         # that it doesn’t have a response associated.
 
         # Must return only requests (not items).
+
         for r in start_requests:
             yield r
 

@@ -15,7 +15,7 @@ class ZhihuSpiderMiddleware(object):
     # scrapy acts as if the spider middleware does not modify the
     # passed objects.
 
-    @classmethod
+
     def get_proxy(self):
         try:
             response = requests.get(PROXY_POOL_URL)
@@ -26,7 +26,7 @@ class ZhihuSpiderMiddleware(object):
             return None
 
     def process_request(self, request, spider):
-        thisip = self.get_proxy(self)
+        thisip = self.get_proxy()
         print("this is ip:" + thisip)
         request.meta["proxy"] = "http://" + thisip
 

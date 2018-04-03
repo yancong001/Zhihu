@@ -8,7 +8,7 @@
 from scrapy import signals
 import requests
 import random
-from zhihuuser.settings import PROXY_POOL_URL
+# from zhihuuser.settings import PROXY_POOL_URL
 import time
 
 
@@ -18,34 +18,34 @@ class ZhihuSpiderMiddleware(object):
     # passed objects.
 
 
-    def get_proxy(self):
-        try:
-            response = requests.get(PROXY_POOL_URL)
-            if response.status_code == 200:
-                return response.text
-            return None
-        except ConnectionError:
-            return None
+    # def get_proxy(self):
+    #     try:
+    #         # response = requests.get(PROXY_POOL_URL)
+    #         if response.status_code == 200:
+    #             return response.text
+    #         return None
+    #     except ConnectionError:
+    #         return None
 
     def process_request(self, request, spider):    #20180403修改，新增代理
     #     thisip = self.get_proxy()
         # print("this is ip:" + thisip)
         proxy = self.get_random_proxy()
-        print("this is request ip:" +proxy)
-        request.meta["proxy"] = "http://" +proxy
+        print("this is request ip:" + proxy)
+        request.meta["proxy"] = proxy
 
-    def process_response(self, request, response, spider):  #20180403修改，新增代理
-        '''对返回的response处理'''
-        # 如果返回的response状态不是200，重新生成当前request对象
-        if response.status != 200:
-            if response.status == 301:                  #排除无法爬取org用户（301页面）的问题
-                return response
-            proxy = self.get_random_proxy()
-            print("this is response ip:" + proxy)
-            # 对当前request加上代理
-            request.meta['proxy'] = "http://" +proxy
-            return request
-        return response
+    # def process_response(self, request, response, spider):  #20180403修改，新增代理
+    #     '''对返回的response处理'''
+    #     # 如果返回的response状态不是200，重新生成当前request对象
+    #     if response.status != 200:
+    #         # if response.status == 301:                  #排除无法爬取org用户（301页面）的问题
+    #         #     return response
+    #         # proxy = self.get_random_proxy()
+    #         # print("this is response ip:" + proxy)
+    #         # 对当前request加上代理
+    #         request.meta['proxy'] = "http://"+proxy
+    #         return request
+    #     return response
 
     def get_random_proxy(self):   #20180403修改，新增代理
         '''随机从文件中读取proxy'''

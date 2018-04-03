@@ -14,14 +14,15 @@ BOT_NAME = 'zhihuuser'
 SPIDER_MODULES = ['zhihuuser.spiders']
 NEWSPIDER_MODULE = 'zhihuuser.spiders'
 
-PROXY_POOL_URL = 'http://127.0.0.1:5000/get'
+# PROXY_POOL_URL = 'http://127.0.0.1:5000/get'
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 # USER_AGENT = 'zhihu (+http://www.yourdomain.com)'
 
 # Obey robots.txt rules
 ROBOTSTXT_OBEY = False
-
+DOWNLOAD_DELAY = 2
+COOKIES_ENABLED=False
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
 # CONCURRENT_REQUESTS = 32
 
@@ -62,8 +63,9 @@ DEFAULT_REQUEST_HEADERS = {
 # }
 DOWNLOADER_MIDDLEWARES = {
 #    'myproxies.middlewares.MyCustomDownloaderMiddleware': 543,
-     'scrapy.contrib.downloadermiddleware.httpproxy.HttpProxyMiddleware':543,
-     'zhihuuser.middlewares.ZhihuSpiderMiddleware':125
+     'scrapy.downloadermiddlewares.httpproxy.HttpProxyMiddleware':543,
+     'zhihuuser.middlewares.ZhihuSpiderMiddleware':125,
+    # 'scrapy.downloadermiddlewares.defaultheaders.DefaultHeadersMiddleware':None
 }
 # DOWNLOADER_MIDDLEWARES = {
 #     'scrapy_splash.SplashCookiesMiddleware': 723,
@@ -117,5 +119,5 @@ SCHEDULER = "scrapy_redis.scheduler.Scheduler"
 
 
 DUPEFILTER_CLASS = "scrapy_redis.dupefilter.RFPDupeFilter"
-REDIS_URL = 'redis://root:@140.143.39.55:6379'
+REDIS_URL = 'redis://root:redistest@118.89.104.102'
 # SCHEDULER_FLUSH_ON_START = True

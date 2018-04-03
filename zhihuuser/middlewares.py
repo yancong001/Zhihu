@@ -7,7 +7,9 @@
 
 from scrapy import signals
 import requests
+import random
 from zhihuuser.settings import PROXY_POOL_URL
+import time
 
 
 class ZhihuSpiderMiddleware(object):
@@ -25,10 +27,37 @@ class ZhihuSpiderMiddleware(object):
         except ConnectionError:
             return None
 
-    def process_request(self, request, spider):
-        thisip = self.get_proxy()
-        print("this is ip:" + thisip)
-        request.meta["proxy"] = "http://" + thisip
+    def process_request(self, request, spider):    #20180403修改，新增代理
+    #     thisip = self.get_proxy()
+        # print("this is ip:" + thisip)
+        proxy = self.get_random_proxy()
+        print("this is request ip:" +proxy)
+        request.meta["proxy"] = "http://" +proxy
+
+    def process_response(self, request, response, spider):  #20180403修改，新增代理
+        '''对返回的response处理'''
+        # 如果返回的response状态不是200，重新生成当前request对象
+        if response.status != 200:
+            if response.status == 301:                  #排除无法爬取org用户（301页面）的问题
+                return response
+            proxy = self.get_random_proxy()
+            print("this is response ip:" + proxy)
+            # 对当前request加上代理
+            request.meta['proxy'] = "http://" +proxy
+            return request
+        return response
+
+    def get_random_proxy(self):   #20180403修改，新增代理
+        '''随机从文件中读取proxy'''
+        while 1:
+            with open('E:\ProxyPool\\proxies.txt', 'r') as f: #需要修改文件路径
+                proxies = f.readlines()
+            if proxies:
+                break
+            else:
+                time.sleep(1)
+        proxy = random.choice(proxies).strip()
+        return proxy
 
     @classmethod
     def from_crawler(cls, crawler):

@@ -10,8 +10,15 @@ import requests
 import random
 # from zhihuuser.settings import PROXY_POOL_URL
 import time
+import base64
 
+# 代理服务器
+proxyServer = "http://http-dyn.abuyun.com:9020"
 
+    # 代理隧道验证信息
+proxyUser = "H01234567890123D"
+proxyPass = "0123456789012345"
+proxyAuth = "Basic " + base64.urlsafe_b64encode(bytes((proxyUser + ":" + proxyPass), "ascii")).decode("utf8")
 class ZhihuSpiderMiddleware(object):
     # Not all methods need to be defined. If a method is not defined,
     # scrapy acts as if the spider middleware does not modify the
@@ -28,11 +35,15 @@ class ZhihuSpiderMiddleware(object):
     #         return None
 
     def process_request(self, request, spider):    #20180403修改，新增代理
-    #     thisip = self.get_proxy()
+        request.meta["proxy"] = proxyServer
+
+        request.headers["Proxy-Authorization"] = proxyAuth
+        print("this is response ip:" + proxyServer)
+        #thisip = self.get_proxy()
         # print("this is ip:" + thisip)
-        proxy = self.get_random_proxy()
-        print("this is request ip:" + proxy)
-        request.meta["proxy"] = proxy
+        # proxy = self.get_random_proxy()
+        # print("this is request ip:" + proxy)
+        # request.meta["proxy"] = proxy
 
     # def process_response(self, request, response, spider):  #20180403修改，新增代理
     #     '''对返回的response处理'''
@@ -47,17 +58,17 @@ class ZhihuSpiderMiddleware(object):
     #         return request
     #     return response
 
-    def get_random_proxy(self):   #20180403修改，新增代理
-        '''随机从文件中读取proxy'''
-        while 1:
-            with open('E:\ProxyPool\\proxies.txt', 'r') as f: #需要修改文件路径
-                proxies = f.readlines()
-            if proxies:
-                break
-            else:
-                time.sleep(1)
-        proxy = random.choice(proxies).strip()
-        return proxy
+    # def get_random_proxy(self):   #20180403修改，新增代理
+    #     '''随机从文件中读取proxy'''
+    #     while 1:
+    #         with open('E:\ProxyPool\\proxies.txt', 'r') as f: #需要修改文件路径
+    #             proxies = f.readlines()
+    #         if proxies:
+    #             break
+    #         else:
+    #             time.sleep(1)
+    #     proxy = random.choice(proxies).strip()
+    #     return proxy
 
     @classmethod
     def from_crawler(cls, crawler):

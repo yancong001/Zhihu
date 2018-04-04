@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
-
+from fake_useragent import UserAgent
+ua = UserAgent()
 # Scrapy settings for zhihuuser project
 #
 # For simplicity, this file contains only settings considered important or
@@ -21,7 +22,7 @@ NEWSPIDER_MODULE = 'zhihuuser.spiders'
 
 # Obey robots.txt rules
 ROBOTSTXT_OBEY = False
-DOWNLOAD_DELAY = 2
+DOWNLOAD_DELAY = 1
 COOKIES_ENABLED=False
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
 # CONCURRENT_REQUESTS = 32
@@ -42,7 +43,7 @@ COOKIES_ENABLED=False
 
 # Override the default request headers:
 DEFAULT_REQUEST_HEADERS = {
-    'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36',
+    'User-Agent': ua.random,
     'authorization': 'oauth c3cef7c66a1843f8b3a9e6a1e3160e20',
 }
 

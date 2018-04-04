@@ -11,14 +11,26 @@ import random
 # from zhihuuser.settings import PROXY_POOL_URL
 import time
 import base64
+from zhihuuser.settings import DEFAULT_REQUEST_HEADERS
+from fake_useragent import UserAgent
+ua = UserAgent()
 
 # 代理服务器
 proxyServer = "http://http-dyn.abuyun.com:9020"
 
     # 代理隧道验证信息
-proxyUser = "H01234567890123D"
-proxyPass = "0123456789012345"
+proxyUser = ""
+proxyPass = ""
 proxyAuth = "Basic " + base64.urlsafe_b64encode(bytes((proxyUser + ":" + proxyPass), "ascii")).decode("utf8")
+
+
+class RandomUserAgent(object):
+    def process_request(self, request, spider):
+        ua = UserAgent()
+        request.headers.setdefault("User-Agent", ua.random)
+        print(request.headers['User-Agent'])
+
+
 class ZhihuSpiderMiddleware(object):
     # Not all methods need to be defined. If a method is not defined,
     # scrapy acts as if the spider middleware does not modify the
@@ -39,6 +51,7 @@ class ZhihuSpiderMiddleware(object):
 
         request.headers["Proxy-Authorization"] = proxyAuth
         print("this is response ip:" + proxyServer)
+
         #thisip = self.get_proxy()
         # print("this is ip:" + thisip)
         # proxy = self.get_random_proxy()

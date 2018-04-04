@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
-from fake_useragent import UserAgent
-ua = UserAgent()
+
 # Scrapy settings for zhihuuser project
 #
 # For simplicity, this file contains only settings considered important or
@@ -22,7 +21,7 @@ NEWSPIDER_MODULE = 'zhihuuser.spiders'
 
 # Obey robots.txt rules
 ROBOTSTXT_OBEY = False
-DOWNLOAD_DELAY = 1
+DOWNLOAD_DELAY = 2
 COOKIES_ENABLED=False
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
 # CONCURRENT_REQUESTS = 32
@@ -43,7 +42,6 @@ COOKIES_ENABLED=False
 
 # Override the default request headers:
 DEFAULT_REQUEST_HEADERS = {
-    'User-Agent': ua.random,
     'authorization': 'oauth c3cef7c66a1843f8b3a9e6a1e3160e20',
 }
 
@@ -66,8 +64,11 @@ DOWNLOADER_MIDDLEWARES = {
 #    'myproxies.middlewares.MyCustomDownloaderMiddleware': 543,
      'scrapy.downloadermiddlewares.httpproxy.HttpProxyMiddleware':543,
      'zhihuuser.middlewares.ZhihuSpiderMiddleware':125,
+     'zhihuuser.middlewares.RandomUserAgent': 126,
     # 'scrapy.downloadermiddlewares.defaultheaders.DefaultHeadersMiddleware':None
 }
+
+
 # DOWNLOADER_MIDDLEWARES = {
 #     'scrapy_splash.SplashCookiesMiddleware': 723,
 #     'scrapy_splash.SplashMiddleware': 725,
@@ -120,5 +121,5 @@ SCHEDULER = "scrapy_redis.scheduler.Scheduler"
 
 
 DUPEFILTER_CLASS = "scrapy_redis.dupefilter.RFPDupeFilter"
-REDIS_URL = 'redis://root:redistest@118.89.104.102'
+REDIS_URL = 'redis://root:@118.89.104.102'
 # SCHEDULER_FLUSH_ON_START = True

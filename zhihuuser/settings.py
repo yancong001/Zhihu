@@ -120,5 +120,5 @@ SCHEDULER = "scrapy_redis.scheduler.Scheduler"
 
 
 DUPEFILTER_CLASS = "scrapy_redis.dupefilter.RFPDupeFilter"
-REDIS_URL = 'redis://root:redistest@118.89.104.102'
+REDIS_URL = 'redis://root:@118.89.104.102'
 # SCHEDULER_FLUSH_ON_START = True
